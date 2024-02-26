@@ -13,6 +13,8 @@
 		A074B8912B8500AD00113955 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A074B88F2B8500AD00113955 /* Main.storyboard */; };
 		A074B8932B8500AE00113955 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A074B8922B8500AE00113955 /* Assets.xcassets */; };
 		A074B8962B8500AE00113955 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A074B8942B8500AE00113955 /* LaunchScreen.storyboard */; };
+		A074B8C02B8794CE00113955 /* CameraDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074B8BF2B8794CE00113955 /* CameraDevice.swift */; };
+		A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A074B8922B8500AE00113955 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A074B8952B8500AE00113955 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A074B8972B8500AE00113955 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A074B8BF2B8794CE00113955 /* CameraDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDevice.swift; sourceTree = "<group>"; };
+		A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = YOLOv3Tiny.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +67,18 @@
 				A074B8922B8500AE00113955 /* Assets.xcassets */,
 				A074B8942B8500AE00113955 /* LaunchScreen.storyboard */,
 				A074B8972B8500AE00113955 /* Info.plist */,
+				A074B8BF2B8794CE00113955 /* CameraDevice.swift */,
+				A074B8C72B8C5C5B00113955 /* Models */,
 			);
 			path = "ObjectDetection-iOS";
+			sourceTree = "<group>";
+		};
+		A074B8C72B8C5C5B00113955 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +153,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A074B88E2B8500AD00113955 /* ViewController.swift in Sources */,
+				A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */,
 				A074B88A2B8500AD00113955 /* AppDelegate.swift in Sources */,
+				A074B8C02B8794CE00113955 /* CameraDevice.swift in Sources */,
 				A074B88C2B8500AD00113955 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,6 +316,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +345,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

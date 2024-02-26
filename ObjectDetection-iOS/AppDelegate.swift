@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  ObjectDetection-iOS
 //
-//  Created by lucas on 2/21/24.
+//  Created by sangju.lee on 2/21/24.
 //
 
 import UIKit
