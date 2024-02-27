@@ -11,19 +11,30 @@ import Vision
 
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     @IBOutlet weak var previewView: UIView!
-
+    
+    @IBOutlet weak var inferenceLabel: UILabel!
+    @IBOutlet weak var etimeLabel: UILabel!
+    @IBOutlet weak var fpsLabel: UILabel!
+    
     let drawLayer = CALayer()
 
     var cameraDevice: CameraDevice?
 
     var _model: VNCoreMLModel? = nil
 
+    var startTime: CFTimeInterval = 0
+    var totalInferenceTime: CFTimeInterval = 0
+    var frameCount: Int = 0
+    var lastTimestamp: CFTimeInterval = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         checkCameraPermission()
+        // Record start time
+        startTime = CACurrentMediaTime()
     }
-
+    
     func checkCameraPermission() {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
             if granted {
@@ -66,9 +77,13 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(.right)
 
         analyzeImage(image: ciImage)
+        updateFPS()
     }
 
     func analyzeImage(image: CIImage) {
+        // Record start time for inference time calculation
+        let startTime = CACurrentMediaTime()
+        
         do {
             if _model == nil {
                 _model = try VNCoreMLModel(for: YOLOv3Tiny(configuration: MLModelConfiguration()).model)
@@ -94,10 +109,16 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 print("there is no bestObservation")
                 return
             }
-
-            print("bestObservation box : \(String(describing: bestObservation.boundingBox))")
+            
             DispatchQueue.main.async {
                 self.drawBoundingBox(bestObservation.boundingBox, bestObservation.labels.first?.identifier ?? "unknown")
+                
+                // Calculate inference time
+                let inferenceTime = CACurrentMediaTime() - startTime
+                self.inferenceLabel.text = "inference: \(String(format: "%.2f", inferenceTime * 1000)) ms"
+                
+                // Calculate total inference time
+                self.totalInferenceTime += inferenceTime
             }
         }
         do {
@@ -130,6 +151,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         boxLayer.foregroundColor = UIColor.red.cgColor
         boxLayer.string = label
         return boxLayer
+    }
+    
+    func updateFPS() {
+        frameCount += 1
+        let currentTime = CACurrentMediaTime()
+        let elapsedTime = currentTime - lastTimestamp
+        
+        if elapsedTime > 1 {
+            let fps = Double(frameCount) / elapsedTime
+            DispatchQueue.main.async {
+                self.fpsLabel.text = "FPS: \(String(format: "%.2f", fps))"
+            }
+            
+            // Reset frame count and timestamp
+            frameCount = 0
+            lastTimestamp = currentTime
+        }
     }
 }
 
