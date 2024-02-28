@@ -88,7 +88,7 @@ internal class CameraDevice: NSObject {
         self.captureSession.startRunning()
         
         try cameraDevice.lockForConfiguration()
-        cameraDevice.videoZoomFactor = 2.0
+        cameraDevice.videoZoomFactor = 1.0
         cameraDevice.unlockForConfiguration()
     }
     
