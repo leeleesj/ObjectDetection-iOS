@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A04A9C062B8F7E2F00CEA8EF /* PerformanceMeasurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04A9C052B8F7E2F00CEA8EF /* PerformanceMeasurer.swift */; };
 		A074B88A2B8500AD00113955 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074B8892B8500AD00113955 /* AppDelegate.swift */; };
 		A074B88C2B8500AD00113955 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074B88B2B8500AD00113955 /* SceneDelegate.swift */; };
 		A074B88E2B8500AD00113955 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074B88D2B8500AD00113955 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A04A9C052B8F7E2F00CEA8EF /* PerformanceMeasurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceMeasurer.swift; sourceTree = "<group>"; };
 		A074B8862B8500AD00113955 /* ObjectDetection-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ObjectDetection-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A074B8892B8500AD00113955 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A074B88B2B8500AD00113955 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,12 +65,13 @@
 				A074B8892B8500AD00113955 /* AppDelegate.swift */,
 				A074B88B2B8500AD00113955 /* SceneDelegate.swift */,
 				A074B88D2B8500AD00113955 /* ViewController.swift */,
+				A074B8BF2B8794CE00113955 /* CameraDevice.swift */,
+				A04A9C052B8F7E2F00CEA8EF /* PerformanceMeasurer.swift */,
+				A074B8C72B8C5C5B00113955 /* Models */,
 				A074B88F2B8500AD00113955 /* Main.storyboard */,
 				A074B8922B8500AE00113955 /* Assets.xcassets */,
 				A074B8942B8500AE00113955 /* LaunchScreen.storyboard */,
 				A074B8972B8500AE00113955 /* Info.plist */,
-				A074B8BF2B8794CE00113955 /* CameraDevice.swift */,
-				A074B8C72B8C5C5B00113955 /* Models */,
 			);
 			path = "ObjectDetection-iOS";
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			files = (
 				A074B88E2B8500AD00113955 /* ViewController.swift in Sources */,
 				A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */,
+				A04A9C062B8F7E2F00CEA8EF /* PerformanceMeasurer.swift in Sources */,
 				A074B88A2B8500AD00113955 /* AppDelegate.swift in Sources */,
 				A074B8C02B8794CE00113955 /* CameraDevice.swift in Sources */,
 				A074B88C2B8500AD00113955 /* SceneDelegate.swift in Sources */,
