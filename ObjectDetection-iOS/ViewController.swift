@@ -19,20 +19,19 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     let drawLayer = CALayer()
 
     var cameraDevice: CameraDevice?
+    var performanceMeasure = PerfermanceMeasurer()
 
+    let maf1 = MovingAverageFilter()
+    let maf2 = MovingAverageFilter()
+    let maf3 = MovingAverageFilter()
+    
     var _model: VNCoreMLModel? = nil
-
-    var startTime: CFTimeInterval = 0
-    var totalInferenceTime: CFTimeInterval = 0
-    var frameCount: Int = 0
-    var lastTimestamp: CFTimeInterval = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         checkCameraPermission()
-        // Record start time
-        startTime = CACurrentMediaTime()
+        performanceMeasure.delegate = self
     }
     
     func checkCameraPermission() {
@@ -68,66 +67,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
 
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            print("error while CMSampleBufferGetImageBuffer")
-            return
-        }
-
-        let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(.right)
-
-        analyzeImage(image: ciImage)
-        updateFPS()
-    }
-
-    func analyzeImage(image: CIImage) {
-        // Record start time for inference time calculation
-        let startTime = CACurrentMediaTime()
-        
-        do {
-            if _model == nil {
-                _model = try VNCoreMLModel(for: YOLOv3Tiny(configuration: MLModelConfiguration()).model)
-            }
-        } catch {
-            print("cannot load mlmodel")
-        }
-        guard let model = _model else {
-            print("there is no model")
-            return
-        }
-
-        let handler = VNImageRequestHandler(ciImage: image, orientation: .up)
-        let request = VNCoreMLRequest(model: model) { requested, error in
-            guard let observations = requested.results as? [VNRecognizedObjectObservation] else {
-                print("there is no observations")
-                return
-            }
-            let _bestObservation = observations.max { lhs, rhs in
-                lhs.confidence < rhs.confidence
-            }
-            guard let bestObservation = _bestObservation else {
-                print("there is no bestObservation")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.drawBoundingBox(bestObservation.boundingBox, bestObservation.labels.first?.identifier ?? "unknown")
-                
-                // Calculate inference time
-                let inferenceTime = CACurrentMediaTime() - startTime
-                self.inferenceLabel.text = "inference: \(String(format: "%.2f", inferenceTime * 1000)) ms"
-                
-                // Calculate total inference time
-                self.totalInferenceTime += inferenceTime
-            }
-        }
-        do {
-            try handler.perform([request])
-        } catch {
-            print("error while perform request")
-        }
-    }
-
     func drawBoundingBox(_ box: CGRect, _ label: String) {
         let layerWidth = drawLayer.bounds.width
         let layerHeight = drawLayer.bounds.height
@@ -153,21 +92,88 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         return boxLayer
     }
     
-    func updateFPS() {
-        frameCount += 1
-        let currentTime = CACurrentMediaTime()
-        let elapsedTime = currentTime - lastTimestamp
-        
-        if elapsedTime > 1 {
-            let fps = Double(frameCount) / elapsedTime
-            DispatchQueue.main.async {
-                self.fpsLabel.text = "FPS: \(String(format: "%.2f", fps))"
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            print("error while CMSampleBufferGetImageBuffer")
+            return
+        }
+
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(.right)
+        // start of measure
+        self.performanceMeasure.startMeasurement()
+        analyzeImage(image: ciImage)
+    }
+    
+}
+
+// MARK: MLModel prediction & post-processing
+extension ViewController {
+    func analyzeImage(image: CIImage) {
+        do {
+            if _model == nil {
+                _model = try VNCoreMLModel(for: YOLOv3Tiny(configuration: MLModelConfiguration()).model)
             }
-            
-            // Reset frame count and timestamp
-            frameCount = 0
-            lastTimestamp = currentTime
+        } catch {
+            print("cannot load mlmodel")
+        }
+        guard let model = _model else {
+            print("there is no model")
+            return
+        }
+
+        let handler = VNImageRequestHandler(ciImage: image, orientation: .up)
+        let request = VNCoreMLRequest(model: model) { requested, error in
+            guard let observations = requested.results as? [VNRecognizedObjectObservation] else {
+                print("there is no observations")
+                return
+            }
+            let _bestObservation = observations.max { lhs, rhs in
+                lhs.confidence < rhs.confidence
+            }
+            guard let bestObservation = _bestObservation else {
+                print("there is no bestObservation")
+                return
+            }
+            self.performanceMeasure.labelMeasurement(with: "endInference")
+            DispatchQueue.main.async {
+                self.drawBoundingBox(bestObservation.boundingBox, bestObservation.labels.first?.identifier ?? "unknown")
+                self.performanceMeasure.endMeasurement()
+            }
+        }
+        do {
+            try handler.perform([request])
+        } catch {
+            print("error while perform request")
         }
     }
 }
 
+extension ViewController: PerformanceMeasurerDelegate {
+    func updateMeasure(inferenceTime: Double, executionTime: Double, fps: Int) {
+        self.maf1.append(element: Int(inferenceTime*1000.0))
+        self.maf2.append(element: Int(executionTime*1000.0))
+        self.maf3.append(element: fps)
+        
+        self.inferenceLabel.text = "inference tlqkf: \(self.maf1.averageValue) ms"
+        self.etimeLabel.text = "execution: \(self.maf2.averageValue) ms"
+        self.fpsLabel.text = "fps: \(self.maf3.averageValue)"
+    }
+}
+
+class MovingAverageFilter {
+    private var arr: [Int] = []
+    private let maxCount = 10
+    
+    public func append(element: Int) {
+        arr.append(element)
+        if arr.count > maxCount {
+            arr.removeFirst()
+        }
+    }
+    
+    public var averageValue: Int {
+        guard !arr.isEmpty else { return 0 }
+        let sum = arr.reduce(0) { $0 + $1 }
+        return Int(Double(sum) / Double(arr.count))
+    }
+}
