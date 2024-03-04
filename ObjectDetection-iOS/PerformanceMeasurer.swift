@@ -9,7 +9,7 @@ import UIKit
 
 // 성능 측정을 위한 델리게이트 프로토콜
 protocol PerformanceMeasurerDelegate: AnyObject {
-    func updateMeasure(inferenceTime: Double, executionTime: Double, fps: Int)
+    func updateMeasure(inferenceTime: Double, executionTime: Double, fps: Double)
 }
 
 // 성능 측정 클래스
@@ -50,7 +50,7 @@ class PerfermanceMeasurer: NSObject {
            let beforeStartTime = beforeMeasurement["start"] {
             delegate?.updateMeasure(inferenceTime: endInferenceTime - startTime,
                                     executionTime: endTime - startTime,
-                                    fps: Int(1 / (startTime - beforeStartTime)))
+                                    fps: 1 / (startTime - beforeStartTime))
         }
     }
     

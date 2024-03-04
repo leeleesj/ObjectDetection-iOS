@@ -149,31 +149,32 @@ extension ViewController {
 }
 
 extension ViewController: PerformanceMeasurerDelegate {
-    func updateMeasure(inferenceTime: Double, executionTime: Double, fps: Int) {
-        self.maf1.append(element: Int(inferenceTime*1000.0))
-        self.maf2.append(element: Int(executionTime*1000.0))
+    func updateMeasure(inferenceTime: Double, executionTime: Double, fps: Double) {
+        self.maf1.append(element: inferenceTime*1000.0)
+        self.maf2.append(element: executionTime*1000.0)
         self.maf3.append(element: fps)
         
-        self.inferenceLabel.text = "inference tlqkf: \(self.maf1.averageValue) ms"
+        self.inferenceLabel.text = "inference: \(self.maf1.averageValue) ms"
         self.etimeLabel.text = "execution: \(self.maf2.averageValue) ms"
         self.fpsLabel.text = "fps: \(self.maf3.averageValue)"
     }
 }
 
 class MovingAverageFilter {
-    private var arr: [Int] = []
+    private var arr: [Double] = []
     private let maxCount = 10
     
-    public func append(element: Int) {
+    public func append(element: Double) {
         arr.append(element)
         if arr.count > maxCount {
             arr.removeFirst()
         }
     }
     
-    public var averageValue: Int {
+    public var averageValue: Double {
         guard !arr.isEmpty else { return 0 }
         let sum = arr.reduce(0) { $0 + $1 }
-        return Int(Double(sum) / Double(arr.count))
+        let average = Double(sum) / Double(arr.count)
+        return Double(String(format: "%.1f", average)) ?? 0
     }
 }
