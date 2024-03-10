@@ -16,6 +16,11 @@
 		A074B8962B8500AE00113955 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A074B8942B8500AE00113955 /* LaunchScreen.storyboard */; };
 		A074B8C02B8794CE00113955 /* CameraDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074B8BF2B8794CE00113955 /* CameraDevice.swift */; };
 		A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */; };
+		A09BBC2D2B96426E001C47D3 /* yolov8m.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = A09BBC2C2B96426E001C47D3 /* yolov8m.mlpackage */; };
+		A0E8B4A72B9E112E00C2C0E6 /* yolov8n.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = A0E8B4A32B9E112E00C2C0E6 /* yolov8n.mlpackage */; };
+		A0E8B4A82B9E112E00C2C0E6 /* yolov8x.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = A0E8B4A42B9E112E00C2C0E6 /* yolov8x.mlpackage */; };
+		A0E8B4A92B9E112E00C2C0E6 /* yolov8l.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = A0E8B4A52B9E112E00C2C0E6 /* yolov8l.mlpackage */; };
+		A0E8B4AA2B9E112E00C2C0E6 /* yolov8s.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = A0E8B4A62B9E112E00C2C0E6 /* yolov8s.mlpackage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +35,11 @@
 		A074B8972B8500AE00113955 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A074B8BF2B8794CE00113955 /* CameraDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDevice.swift; sourceTree = "<group>"; };
 		A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = YOLOv3Tiny.mlmodel; sourceTree = "<group>"; };
+		A09BBC2C2B96426E001C47D3 /* yolov8m.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8m.mlpackage; sourceTree = "<group>"; };
+		A0E8B4A32B9E112E00C2C0E6 /* yolov8n.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8n.mlpackage; sourceTree = "<group>"; };
+		A0E8B4A42B9E112E00C2C0E6 /* yolov8x.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8x.mlpackage; sourceTree = "<group>"; };
+		A0E8B4A52B9E112E00C2C0E6 /* yolov8l.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8l.mlpackage; sourceTree = "<group>"; };
+		A0E8B4A62B9E112E00C2C0E6 /* yolov8s.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8s.mlpackage; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +90,11 @@
 			isa = PBXGroup;
 			children = (
 				A074B8CF2B8C5C5B00113955 /* YOLOv3Tiny.mlmodel */,
+				A09BBC2C2B96426E001C47D3 /* yolov8m.mlpackage */,
+				A0E8B4A52B9E112E00C2C0E6 /* yolov8l.mlpackage */,
+				A0E8B4A32B9E112E00C2C0E6 /* yolov8n.mlpackage */,
+				A0E8B4A62B9E112E00C2C0E6 /* yolov8s.mlpackage */,
+				A0E8B4A42B9E112E00C2C0E6 /* yolov8x.mlpackage */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -156,11 +171,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A074B88E2B8500AD00113955 /* ViewController.swift in Sources */,
-				A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */,
 				A04A9C062B8F7E2F00CEA8EF /* PerformanceMeasurer.swift in Sources */,
 				A074B88A2B8500AD00113955 /* AppDelegate.swift in Sources */,
+				A0E8B4A72B9E112E00C2C0E6 /* yolov8n.mlpackage in Sources */,
 				A074B8C02B8794CE00113955 /* CameraDevice.swift in Sources */,
+				A0E8B4AA2B9E112E00C2C0E6 /* yolov8s.mlpackage in Sources */,
+				A0E8B4A82B9E112E00C2C0E6 /* yolov8x.mlpackage in Sources */,
 				A074B88C2B8500AD00113955 /* SceneDelegate.swift in Sources */,
+				A0E8B4A92B9E112E00C2C0E6 /* yolov8l.mlpackage in Sources */,
+				A09BBC2D2B96426E001C47D3 /* yolov8m.mlpackage in Sources */,
+				A074B8D82B8C5C5B00113955 /* YOLOv3Tiny.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
