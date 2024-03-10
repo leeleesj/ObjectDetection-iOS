@@ -16,6 +16,14 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     @IBOutlet weak var etimeLabel: UILabel!
     @IBOutlet weak var fpsLabel: UILabel!
     
+    @IBOutlet weak var pickerModel: UIPickerView!
+    @IBOutlet weak var lblModelFileName: UILabel!
+    
+    let MAX_ARRAY_NUM = 5
+    let PICKER_VIEW_COLUMN = 1
+    var modelFileName = ["YOLOv8m", "YOLOv8n", "YOLOv8s", "YOLOv8l", "YOLOv8x"]
+    var selectedModel: String?
+    
     let drawLayer = CALayer()
 
     var cameraDevice: CameraDevice?
@@ -111,7 +119,26 @@ extension ViewController {
     func analyzeImage(image: CIImage) {
         do {
             if _model == nil {
-                _model = try VNCoreMLModel(for: YOLOv3Tiny(configuration: MLModelConfiguration()).model)
+                switch selectedModel {
+                case "YOLOv8n":
+                    _model = try VNCoreMLModel(for: yolov8n(configuration: MLModelConfiguration()).model)
+                    print("model: YOLOv8n")
+                case "YOLOv8s":
+                    _model = try VNCoreMLModel(for: yolov8s(configuration: MLModelConfiguration()).model)
+                    print("model: YOLOv8s")
+                case "YOLOv8m":
+                    _model = try VNCoreMLModel(for: yolov8m(configuration: MLModelConfiguration()).model)
+                    print("model: YOLOv8m")
+                case "YOLOv8l":
+                    _model = try VNCoreMLModel(for: yolov8l(configuration: MLModelConfiguration()).model)
+                    print("model: YOLOv8l")
+                case "YOLOv8x":
+                    _model = try VNCoreMLModel(for: yolov8x(configuration: MLModelConfiguration()).model)
+                    print("model: YOLOv8x")
+                default:
+                    print("model did not load")
+                    break
+                }
             }
         } catch {
             print("cannot load mlmodel")
@@ -145,6 +172,25 @@ extension ViewController {
         } catch {
             print("error while perform request")
         }
+    }
+}
+
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return PICKER_VIEW_COLUMN
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return modelFileName.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return modelFileName[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedModel = modelFileName[row]
+        lblModelFileName.text = selectedModel
     }
 }
 
